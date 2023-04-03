@@ -99,12 +99,15 @@ def search(query):
     searched_indices = sorted(distances.items(), key=lambda x: x[1], reverse=True)
     result_data = []
     for index in searched_indices:
-        doc_id, tf_idf = index
-        if tf_idf < 0.05:
-            continue
+        try:
+            doc_id, tf_idf = index
+            if tf_idf < 0.01:
+                continue
 
-        print("Document: {} ({})\nSimilarity: {}\n".format(doc_id, index_dict[doc_id], tf_idf))
-        result_data.append({'doc_id': doc_id, 'link': index_dict[doc_id], 'cosine_sim': tf_idf})
+            print("Document: {} ({})\nSimilarity: {}\n".format(doc_id, index_dict[doc_id], tf_idf))
+            result_data.append({'doc_id': doc_id, 'link': index_dict[doc_id], 'cosine_sim': tf_idf})
+        except KeyError:
+            pass
     return result_data
 
 
